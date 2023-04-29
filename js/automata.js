@@ -1,19 +1,20 @@
+// Obtener una referencia al botón
+const cargarPalabra = document.getElementById("cargarPalabra");
+cargarPalabra.addEventListener("click", agregarSimbolosALaCinta);
+
+let $ = go.GraphObject.make;
 let automata;
-let cinta;
+let cinta ;
 
-window.onload = function init() {  
-        
-    // Creamos un diagrama
-    let $ = go.GraphObject.make;
-    crearAutomata($);
-    crearCinta($);  
-}
+crearAutomata();
+crearCinta();
 
-function crearAutomata($){
+
+function crearAutomata(){
 
     // Creamos los nodos
     let nodeDataArray = [
-        { key: "0", text: "q0", loc: new go.Point(50, -50), isAccept: true},
+        { key: "0", text: "q0", loc: new go.Point(  50, -50), isAccept: true},
         { key: "1", text: "q1", loc: new go.Point(250, -50)},
         { key: "2", text: "q2", loc: new go.Point(450, -50)},
     ];
@@ -72,14 +73,12 @@ function crearAutomata($){
     automata.isReadOnly = true;
 }
 
-function crearCinta($){
-
-    // Creampos el array que contiene los nodos de la cinta
-    let nodeDataArray = [];
+function crearCinta(){
 
     // Agregar 80 nodos en blanco
+    let nodeDataArray = [];
     for (let i = 0; i <= 80; i++) {
-        nodeDataArray.push({ key: (i).toString(), text: " " });
+        nodeDataArray.push({ key: (i).toString(), text: " "});
     }
 
     // Definimos la cinta a la agregamos al div
@@ -93,15 +92,16 @@ function crearCinta($){
     // Creamos el layout de los nodos
     cinta.nodeTemplate = $(go.Node, "Auto",
         { width: 50, height: 50 },
+        // go.Binding("location", "loc"),
         $(go.Shape, "Rectangle", { fill: "white", stroke: "black", stretch: go.GraphObject.Fill }),  // Establecer stretch a Fill
         $(go.TextBlock, "",
-            new go.Binding("text", "name")
+            new go.Binding("text", "text")
         ),
     );
 
     // Creamos el layout de la cinta
     let layout = $(go.GridLayout, {
-        wrappingWidth: Infinity,  // colocar todos los nodos en una fila // colocar todos los nodos en una fila
+        wrappingWidth: Infinity,  // colocar todos los nodos en una fila
         spacing: new go.Size(1, 1),  // espacio entre los nodos
         alignment: go.GridLayout.Position,
         cellSize: new go.Size(50, 50)  // tamaño de celda
@@ -113,7 +113,44 @@ function crearCinta($){
     // Agregamos los datos a la cinta
     cinta.model = new go.GraphLinksModel(nodeDataArray);
     cinta.isReadOnly = true;
+
 }
+
+function agregarSimbolos(pos, x){
+    cinta.model.commit(function(m){
+        let nodeData = m.findNodeDataForKey((pos + 9).toString());
+        nodeData.text = x;
+        cinta.model.updateTargetBindings(nodeData);
+    });
+}
+
+function agregarSimbolosALaCinta(){
+    const texto = document.getElementById("texto").value;
+    for (let i = 0; i < texto.length; i++) {
+        simbolo = texto.charAt(i);
+        agregarSimbolos(i, simbolo);
+    }
+}
+
+function scrollCinta(dx) {
+    var position = cinta.position;
+    cinta.position = new go.Point(position.x - dx, position.y);
+} 
+  
+for (let i = 0; i < 8; i++) {
+    setTimeout(function() {
+        //scrollCinta(-50);
+    }, i * 1000); // i * 1000 significa que el retraso aumenta en 1 segundo por cada iteración
+}
+
+
+
+
+
+
+  
   
 
 
+
+  
