@@ -21,12 +21,12 @@ function crearAutomata(){
         
     // Creamos las conexiones
     let linkDataArray = [
-        { from: "0", to: "0", text: "a/a/R\na/a/L" },
+        { from: "0", to: "0", text: "a/a/R\na/a/L\nB/B/L" },
         { from: "0", to: "1", text: "b/a/R" },
         { from: "1", to: "0", text: "a/a/L" },
         { from: "1", to: "1", text: "a/a/R\nb/a/R" },
         { from: "1", to: "2", text: "B/B/L" },
-        { from: "2", to: "1", text: "a/a/L" }
+        { from: "2", to: "1", text: "a/a/L\nB/B/L" }
     ];
     
     // Definimos el autómata y lo agregamos al div
@@ -55,17 +55,19 @@ function crearAutomata(){
     automata.linkTemplate =
         $(go.Link,
         { curve: go.Link.Bezier, curviness: 20 },
-        
-        $(go.Shape, { strokeWidth: 2},
-        new go.Binding("stroke", "", function(link) {
-        if (link.fromNode.data.key === "0" && link.toNode.data.key === "1") {
-          return "";
-        }
-        return "black";
-        }).ofObject(),),
+        $(go.Shape, { strokeWidth: 2}),
         $(go.Shape, { toArrow: "OpenTriangle", fill: null }),
-        $(go.TextBlock, { segmentOffset: new go.Point(0, -20) }, new go.Binding("text", "text"),
-        { position: new go.Point(6, 6), font: "13pt sans-serif" }, new go.Binding("text", "loc"))
+        $(go.TextBlock, new go.Binding("text", "text"),
+        { position: new go.Point(6, 6), font: "13pt sans-serif" }, 
+          new go.Binding("text", "loc"),
+          new go.Binding("segmentOffset", "", function(link) {
+            if (link.from === "0" && link.to === "0") {
+              return new go.Point(0, -30);
+            } else {
+              return new go.Point(0, -20);
+            }
+          })
+          )
     );
     
     // Agregar los datos al autómata
@@ -129,7 +131,7 @@ function eliminarSimbolos(){
 
 function agregarSimbolos(pos, x){
     cinta.model.commit(function(m){
-        let nodeData = m.findNodeDataForKey((pos + 9).toString());
+        let nodeData = m.findNodeDataForKey((pos + 14).toString());
         nodeData.text = x;
         cinta.model.updateTargetBindings(nodeData);
     });
@@ -142,12 +144,6 @@ function agregarSimbolosALaCinta(){
     for (let i = 0; i < textoAux.length; i++) {
         simbolo = textoAux.charAt(i);
         agregarSimbolos(i, simbolo);
-    }
-
-    for (let i = 0; i < 8; i++) {
-        setTimeout(function() {
-            //scrollCinta(-50);
-        }, i * 1000); // i * 1000 significa que el retraso aumenta en 1 segundo por cada iteración
     }
 }
 
@@ -178,122 +174,125 @@ function reiniciarColoresDeNodosYEnlaces(){
     });
 }
 
-function recorrerAutomata() {
-    let timeoutDelayLinks = 1000;
-    let timeoutDelay = 2000;
-    let inputWor = document.getElementById("texto").value;
-    let inputWord = inputWor;
-    if(inputWor.includes("b")){
-        inputWord = inputWor + " ";
+function reemplazarSimboloEnPalabra(palabra){
+    for (let i = 0; i < palabra.length; i++) {
+      if (palabra[i] === "b") {
+        palabra = palabra.substring(0, i) + "a" + palabra.substring(i + 1);
+      }
     }
+    return palabra;
+}
 
+
+
+function recorrerAutomata() {
+    //let timeoutDelayLinks = 1000;
+    //let timeoutDelay = 2000;
+    let inputWor = document.getElementById("texto").value;
+    let inputWord = inputWor + "B";
     let currentNode = automata.findNodeForKey("0");
     let i = 0;
     let auxIndex = inputWord.length - 1;
 
     reiniciarColoresDeNodosYEnlaces();
-    
-    function procesarSiguienteCaracter() {
-        if (i < inputWord.length * 2) {
-          let nextNode = null;
-          let currentChar = "";
-          if(i < inputWord.length){
-            currentChar = inputWord.charAt(i);
-          }else{
-            currentChar = inputWord.charAt(auxIndex);
-            auxIndex--;
-          }
-          
-  
-          automata.links.each(function(link) {
-            if (link.fromNode.data.key === currentNode.data.key){
-                let transicion = link.data.text.split("\n");
-                transicion.forEach(trans => {
-                    if(i < inputWord.length){
-                        if(trans[0] === currentChar && trans[4] === "R"){
-                            nextNode = automata.findNodeForKey(link.toNode.data.key);
-                        }
-                    }else{
-                        console.log(currentChar);
-                        console.log(trans[0])
-                        console.log(trans[0] === currentChar)
-                        if(trans[0] === currentChar && trans[4] === "L"){
-                            nextNode = automata.findNodeForKey(link.toNode.data.key);
-                        }
-                    }
-                    if(currentChar === " "){
+    procesarSiguienteCaracter(currentNode, inputWord, i, auxIndex);
+}
+
+function procesarSiguienteCaracter(currentNode, inputWord, i, auxIndex, auxIndex) {
+    let timeoutDelayLinks = 1000;
+    let timeoutDelay = 2000;
+    if (i < (inputWord.length * 2) - 2) {
+      let nextNode = null;
+      let currentChar = "";
+
+      if(i < inputWord.length){
+        currentChar = inputWord.charAt(i);
+      }else{
+        currentChar = inputWord.charAt(auxIndex);
+        auxIndex--;
+      }
+
+      automata.links.each(function(link) {
+        if (link.fromNode.data.key === currentNode.data.key){
+            let transicion = link.data.text.split("\n");
+            transicion.forEach(trans => {
+                if(i < inputWord.length - 1){
+                    if(trans[0] === currentChar && trans[4] === "R"){
                         nextNode = automata.findNodeForKey(link.toNode.data.key);
                     }
-                });
-            }
-        });
-  
-          if (nextNode === null) {
-              currentNode.findMainElement().stroke = "black";
-              currentNode.findMainElement().fill = "red";
-              /*setTimeout(function() {
-                mostrarModal(false);
-              }, 1000);*/
-              return;
+                }else{
+                    if(trans[0] === currentChar && trans[4] === "L"){
+                        nextNode = automata.findNodeForKey(link.toNode.data.key);
+                        inputWord = reemplazarSimboloEnPalabra(inputWord);
+                    }
+                }
+            });
+        }
+    });
+
+      if (nextNode === null) {
+          currentNode.findMainElement().stroke = "black";
+          currentNode.findMainElement().fill = "red";
+          console.log("No se encontró el siguiente nodo");
+          return;
+      }
+
+      let link = null;
+      automata.links.each(function(l) {
+          if (l.fromNode === currentNode && l.toNode === nextNode) {
+              link = l;
+              return false;
           }
-  
-          let link = null;
-          automata.links.each(function(l) {
-              if (l.fromNode === currentNode && l.toNode === nextNode) {
-                  link = l;
-                  return false;
-              }
-          });
-        
-          if (link === null) {
-              return;
+      });
+    
+      if (link === null) {
+          return;
+      }
+
+      // Colorear el nodo actual y el enlace
+      currentNode.findMainElement().stroke = "green";
+      currentNode.findMainElement().fill = "gray";
+
+      let previousNode = currentNode;
+      setTimeout(function() {
+          link.path.stroke = "green";
+          link.path.strokeDashArray = [4, 2];
+          previousNode.findMainElement().stroke = "red";
+        }, timeoutDelayLinks);
+      
+      // Actualizar nodo actual y contador
+      currentNode = nextNode;
+      i++;
+      
+    // Colorear enlace anterior rojo al pasar al siguiente nodo
+    setTimeout(function() {
+        link.path.stroke = "red";
+        if(i <= inputWord.length - 1){
+            scrollCinta(-50);
+            setTimeout(function() {
+                cambiarSimboloBPorA(i + 14);
+            },500);
+          }else{
+          scrollCinta(50);
           }
-  
-          // Colorear el nodo actual y el enlace
-          currentNode.findMainElement().stroke = "green";
-          currentNode.findMainElement().fill = "gray";
-  
-          let previousNode = currentNode;
-          setTimeout(function() {
-              link.path.stroke = "green";
-              link.path.strokeDashArray = [4, 2];
-              previousNode.findMainElement().stroke = "red";
-              if(i <= inputWord.length){
-                scrollCinta(-50);
-              }else{
-              scrollCinta(50);
-              }
-            }, timeoutDelayLinks);
-          
-          // Actualizar nodo actual y contador
-          //let previousNode = currentNode;
-          currentNode = nextNode;
-          i++;
-          
-        // Colorear enlace anterior rojo al pasar al siguiente nodo
-        setTimeout(function() {
-            link.path.stroke = "red";
-            procesarSiguienteCaracter();
-          }, timeoutDelay);
+        procesarSiguienteCaracter(currentNode, inputWord, i);
+      }, timeoutDelay);
+    } else {
+        // Verificar si el nodo actual es un estado de aceptación
+        if (currentNode.data.isAccept) {
+            currentNode.findMainElement().stroke = "red";
+            currentNode.findMainElement().fill = "yellow";
+            /*setTimeout(function() {
+              mostrarModal(true);
+            }, 1000);*/
         } else {
-            // Verificar si el nodo actual es un estado de aceptación
-            if (currentNode.data.isAccept) {
-                currentNode.findMainElement().stroke = "red";
-                currentNode.findMainElement().fill = "yellow";
-                /*setTimeout(function() {
-                  mostrarModal(true);
-                }, 1000);*/
-            } else {
-                currentNode.findMainElement().stroke = "black";
-                currentNode.findMainElement().fill = "red";
-                /*setTimeout(function() {
-                  mostrarModal(false);
-                }, 1000);*/
-            }
+            currentNode.findMainElement().stroke = "black";
+            currentNode.findMainElement().fill = "red";
+            /*setTimeout(function() {
+              mostrarModal(false);
+            }, 1000);*/
         }
     }
-      
-    procesarSiguienteCaracter();
 }
   
 
