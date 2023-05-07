@@ -298,7 +298,7 @@ function procesarSiguienteCaracter(currentNode, inputWord, i, auxIndex, indNodo)
             nodoCinta.findMainElement().stroke = "black";
             indNodo++;
             setTimeout(function() {
-                cambiarSimboloBPorA(i + 14);
+                cambiarSimboloBPorA(i + (indiceMitadPantalla - 1));
             },800);
           }else{
             if(auxIndex !== 0){
