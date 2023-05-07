@@ -6,9 +6,14 @@ iniciarRecorrido.addEventListener("click", recorrerAutomata);
 let $ = go.GraphObject.make;
 let automata;
 let cinta ;
+let mitadAncho = window.innerWidth / 2;
+let indiceMitadPantalla = Math.floor(mitadAncho / 50);
+let prueba = 0;
 
 crearAutomata();
 crearCinta();
+
+let nodoInicial = cinta.findNodeForKey((indiceMitadPantalla - 1).toString());
 
 function crearAutomata(){
 
@@ -131,7 +136,7 @@ function eliminarSimbolos(){
 
 function agregarSimbolos(pos, x){
     cinta.model.commit(function(m){
-        let nodeData = m.findNodeDataForKey((pos + 14).toString());
+        let nodeData = m.findNodeDataForKey((pos + indiceMitadPantalla - 1).toString());
         nodeData.text = x;
         cinta.model.updateTargetBindings(nodeData);
     });
@@ -139,6 +144,9 @@ function agregarSimbolos(pos, x){
 
 function agregarSimbolosALaCinta(){
     eliminarSimbolos();
+    prueba = 1;
+    nodoInicial.findMainElement().stroke = "green";
+    nodoInicial.findMainElement().strokeWidth = 3;
     const texto = document.getElementById("texto").value;
     const textoAux = texto + " ";
     for (let i = 0; i < textoAux.length; i++) {
@@ -158,9 +166,19 @@ function cambiarSimboloBPorA(nodo){
 }
 
 function scrollCinta(dx) {
-    var position = cinta.position;
-    cinta.position = new go.Point(position.x - dx, position.y);
-} 
+    let position = cinta.position;
+    let incremento = dx / 20; 
+    let contador = 0; 
+   
+    let intervalo = setInterval(function() {
+      cinta.position = new go.Point(position.x - incremento, position.y);
+  
+      contador++;
+      if (contador >= 20) {
+        clearInterval(intervalo); 
+      }
+    }, 30);
+}
 
 function reiniciarColoresDeNodosYEnlaces(){
     automata.nodes.each(function(node) {
@@ -183,25 +201,32 @@ function reemplazarSimboloEnPalabra(palabra){
     return palabra;
 }
 
-
-
 function recorrerAutomata() {
-    //let timeoutDelayLinks = 1000;
-    //let timeoutDelay = 2000;
     let inputWor = document.getElementById("texto").value;
     let inputWord = inputWor + "B";
     let currentNode = automata.findNodeForKey("0");
     let i = 0;
     let auxIndex = inputWord.length - 1;
+    let indNodo = indiceMitadPantalla - 1;
 
+    if(prueba == 2){
+        inputWord = reemplazarSimboloEnPalabra(inputWord);
+    }
+    
     reiniciarColoresDeNodosYEnlaces();
-    procesarSiguienteCaracter(currentNode, inputWord, i, auxIndex);
+    procesarSiguienteCaracter(currentNode, inputWord, i, auxIndex, indNodo);
+
+    prueba = 2;
 }
 
-function procesarSiguienteCaracter(currentNode, inputWord, i, auxIndex, auxIndex) {
-    let timeoutDelayLinks = 1000;
-    let timeoutDelay = 2000;
-    if (i < (inputWord.length * 2) - 2) {
+function procesarSiguienteCaracter(currentNode, inputWord, i, auxIndex, indNodo) {
+    let timeoutDelayLinks = 3000;
+    let timeoutDelay = 4000;
+    let nodoCinta = cinta.findNodeForKey(indNodo.toString());
+    nodoCinta.findMainElement().stroke = "green";
+    nodoCinta.findMainElement().strokeWidth = 3;
+
+    if (i < (inputWord.length * 2) - 1) {
       let nextNode = null;
       let currentChar = "";
 
@@ -269,13 +294,21 @@ function procesarSiguienteCaracter(currentNode, inputWord, i, auxIndex, auxIndex
         link.path.stroke = "red";
         if(i <= inputWord.length - 1){
             scrollCinta(-50);
+            nodoCinta.findMainElement().strokeWidth = 1;
+            nodoCinta.findMainElement().stroke = "black";
+            indNodo++;
             setTimeout(function() {
                 cambiarSimboloBPorA(i + 14);
-            },500);
+            },800);
           }else{
-          scrollCinta(50);
+            if(auxIndex !== 0){
+                scrollCinta(50);
+                nodoCinta.findMainElement().strokeWidth = 1;
+                nodoCinta.findMainElement().stroke = "black";
+                indNodo--;
+            }   
           }
-        procesarSiguienteCaracter(currentNode, inputWord, i);
+        procesarSiguienteCaracter(currentNode, inputWord, i, auxIndex, indNodo);
       }, timeoutDelay);
     } else {
         // Verificar si el nodo actual es un estado de aceptación

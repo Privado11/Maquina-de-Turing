@@ -9,13 +9,4 @@
     margin: 0 auto;
 }
 
-.indicador{
-    width: 0;
-    height: 0;
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-    border-left: 20px solid black;
-    transform: rotate(90deg);
-    margin: 0 auto;
-}
   
