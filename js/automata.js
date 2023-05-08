@@ -9,7 +9,9 @@ let automata;
 let cinta ;
 let mitadAncho = window.innerWidth / 2;
 let indiceMitadPantalla = Math.floor(mitadAncho / 50);
-let prueba = 0;
+let comprobar = 0;
+let timeoutDelayLinks = 0;
+let timeoutDelay = 0;
 
 crearAutomata();
 crearCinta();
@@ -146,7 +148,7 @@ function agregarSimbolos(pos, x){
 
 function agregarSimbolosALaCinta(){
     eliminarSimbolos();
-    prueba = 1;
+    comprobar = 1;
     nodoInicial.findMainElement().stroke = "green";
     nodoInicial.findMainElement().strokeWidth = 3;
     const texto = document.getElementById("texto").value;
@@ -203,6 +205,17 @@ function reemplazarSimboloEnPalabra(palabra){
     return palabra;
 }
 
+function actualizarVelocidad() {
+    let speed = document.getElementById("formRango").value;
+    timeoutDelay = 5000 - (speed * 45);
+    timeoutDelayLinks = 4000 - (speed * 45);
+}
+
+document.getElementById("formRango").addEventListener("input", function() {
+    actualizarVelocidad();
+});
+
+
 function recorrerAutomata() {
     let inputWor = document.getElementById("texto").value;
     let inputWord = inputWor + "B";
@@ -211,19 +224,18 @@ function recorrerAutomata() {
     let auxIndex = inputWord.length - 1;
     let indNodo = indiceMitadPantalla - 1;
 
-    if(prueba == 2){
+    if(comprobar == 2){
         inputWord = reemplazarSimboloEnPalabra(inputWord);
     }
     
     reiniciarColoresDeNodosYEnlaces();
+    actualizarVelocidad();
     procesarSiguienteCaracter(currentNode, inputWord, i, auxIndex, indNodo);
 
-    prueba = 2;
+    comprobar = 2;
 }
 
 function procesarSiguienteCaracter(currentNode, inputWord, i, auxIndex, indNodo) {
-    let timeoutDelayLinks = 3000;
-    let timeoutDelay = 4000;
     let nodoCinta = cinta.findNodeForKey(indNodo.toString());
     nodoCinta.findMainElement().stroke = "green";
     nodoCinta.findMainElement().strokeWidth = 3;
@@ -301,7 +313,7 @@ function procesarSiguienteCaracter(currentNode, inputWord, i, auxIndex, indNodo)
             indNodo++;
             setTimeout(function() {
                 cambiarSimboloBPorA(i + (indiceMitadPantalla - 1));
-            },800);
+            },timeoutDelay / 2);
           }else{
             if(auxIndex !== 0){
                 scrollCinta(50);

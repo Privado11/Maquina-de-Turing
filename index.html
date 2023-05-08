@@ -13,26 +13,37 @@
     <title>Máquina de Turing</title>
 </head>
 <body>
+    <h1 id="title" class="titulo"></h1>
     <div class="automata" id="automata"></div>
     <div class="cinta" id="cinta"></div>
-    <input type="button" value="Insertar Palabra" class="botonInsertar" id="botonInsertar">
     <div class="dropdown">
-        <button class="dropbtn" id="idioma">Idiomas<span class="icon">&#9660;</span></button>
+        <button class="dropbtn" id="idioma"><span class="icon">&#9660;</span></button>
         <div class="dropdown-content">
             <a class="items" href="#" data-lang="es">Español</a>
             <a class="items" href="#" data-lang="en">English</a>
             <a class="items" href="#" data-lang="fr">Français</a>
         </div>
     </div>
-    <div class="modal Ocultar" id="modalMenu">
+    <button id="history" class="historial"></button>
         <div class="container">
-            <div class="formModal">
-                <h1>Inserte la Palabra</h1>
-                <input type="text" id="texto" class="texto" placeholder="Insertar palabra">
-                <button id="cargarPalabra" class="botonModal">Cargar palabra</button>
-                <button id="recorrido" class="botonModal">Iniciar</button>
+            <h2 id="insertarPalabra" class="insert-word"></h2>
+            <input type="text" id="texto" class="texto">
+            <div class="container-buttons">
+                <div class="formModal">
+                    <button id="cargarPalabra" class="botonModal"></button>
+                    <button id="recorrido" class="botonModal"></button>
+                </div>
+                <div class="velocity-con">
+                    <div class="rango">
+                        <p id="velocity"></p>
+                        <span id="valorRango"></span>
+                    </div>
+                    <p class="range">
+                    <input class="formRango" id="formRango" type="range" min="0" max="100" onchange="mostrarValorRango()"
+                    oninput="mostrarValorRango()">
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
 </body>
 </html>

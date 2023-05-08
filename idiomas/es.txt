@@ -1,0 +1,7 @@
+title = Máquina de Turing
+idioma = Idioma
+history = Historial
+insertarPalabra = Inserte la Palabra
+cargarPalabra = Cargar palabra
+recorrido = Iniciar
+velocity = Velocidad: 

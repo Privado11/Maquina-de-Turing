@@ -1,0 +1,7 @@
+title = Turing Machine
+idioma = Language
+history = History
+insertarPalabra = Insert Word
+cargarPalabra = Load word
+recorrido = Start
+velocity = Speed: 
