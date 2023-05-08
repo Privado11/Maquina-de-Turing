@@ -1,6 +1,9 @@
 .automata{
     width: 100%; 
     height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cinta{
@@ -9,4 +12,3 @@
     margin: 0 auto;
 }
 
-  

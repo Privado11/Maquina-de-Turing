@@ -6,17 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/maquinaTuring.css">
     <link rel="stylesheet" href="./css/menu.css">
+    <link rel="stylesheet" href="./css/opcionIdioma.css">
     <script src="https://cdn.jsdelivr.net/npm/gojs/release/go.js"></script>
     <script defer src="./js/automata.js"></script>
+    <script defer src="./js/menu.js"></script>
     <title>Máquina de Turing</title>
 </head>
 <body>
     <div class="automata" id="automata"></div>
     <div class="cinta" id="cinta"></div>
-    <div class="menu">
-        <input type="text" id="texto">
-        <button id="cargarPalabra">Cargar palabra</button>
-        <button id="recorrido">Iniciar</button>
+    <input type="button" value="Insertar Palabra" class="botonInsertar" id="botonInsertar">
+    <div class="dropdown">
+        <button class="dropbtn" id="idioma">Idiomas<span class="icon">&#9660;</span></button>
+        <div class="dropdown-content">
+            <a class="items" href="#" data-lang="es">Español</a>
+            <a class="items" href="#" data-lang="en">English</a>
+            <a class="items" href="#" data-lang="fr">Français</a>
+        </div>
+    </div>
+    <div class="modal Ocultar" id="modalMenu">
+        <div class="container">
+            <div class="formModal">
+                <h1>Inserte la Palabra</h1>
+                <input type="text" id="texto" class="texto" placeholder="Insertar palabra">
+                <button id="cargarPalabra" class="botonModal">Cargar palabra</button>
+                <button id="recorrido" class="botonModal">Iniciar</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>

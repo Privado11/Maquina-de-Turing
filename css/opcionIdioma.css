@@ -1,0 +1,19 @@
+.dropdown{
+    position: absolute;
+    top: 20%;
+    z-index: 999;
+    right: 2%;
+    height: 40px;
+    transition: all linear .2s;
+    background-color: rgb(14, 113, 80);
+}
+.dropbtn{
+    cursor: pointer;
+    background-color: rgb(14, 113, 80);
+    color: white;
+    font-weight: 600;
+    height: 100%;
+    width: 100%;
+    border: none;
+}
+    

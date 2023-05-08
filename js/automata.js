@@ -1,6 +1,7 @@
 const cargarPalabra = document.getElementById("cargarPalabra");
 cargarPalabra.addEventListener("click", agregarSimbolosALaCinta);
 const iniciarRecorrido = document.getElementById("recorrido");
+const modalContainer = document.getElementById('modalMenu');
 iniciarRecorrido.addEventListener("click", recorrerAutomata);
 
 let $ = go.GraphObject.make;
@@ -16,6 +17,7 @@ crearCinta();
 let nodoInicial = cinta.findNodeForKey((indiceMitadPantalla - 1).toString());
 
 function crearAutomata(){
+
 
     // Creamos los nodos
     let nodeDataArray = [
