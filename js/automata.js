@@ -1,8 +1,55 @@
 const cargarPalabra = document.getElementById("cargarPalabra");
-cargarPalabra.addEventListener("click", agregarSimbolosALaCinta);
+
 const iniciarRecorrido = document.getElementById("recorrido");
+
 const modalContainer = document.getElementById('modalMenu');
-iniciarRecorrido.addEventListener("click", recorrerAutomata);
+
+// Clase Command
+class Command {
+    execute() {}
+}
+  
+// Clase AgregarSimbolosALaCintaCommand
+class AgregarSimbolosALaCintaCommand extends Command {
+    constructor(funcion) {
+        super();
+        this.funcion = funcion;
+}
+  
+    execute() {
+      this.funcion();
+    }
+  }
+  
+// Ejecución del commander
+const cargarPalabraCommand = document.getElementById("cargarPalabra");
+const agregarSimbolosCommand = new AgregarSimbolosALaCintaCommand(agregarSimbolosALaCinta);
+
+cargarPalabra.addEventListener("click", () => {
+    agregarSimbolosCommand.execute();
+});
+  
+// Clase RecorrerAutomataCommand
+class RecorrerAutomataCommand extends Command {
+    constructor(funcion) {
+      super();
+      this.funcion = funcion;
+    }
+  
+    execute() {
+      this.funcion();
+    }
+  }
+  
+  //Ejecución del commander
+  const iniciar_Recorrido = document.getElementById("recorrido");
+  const recorrerAutomataCommand = new RecorrerAutomataCommand(recorrerAutomata);
+  
+  iniciar_Recorrido.addEventListener("click", () => {
+    recorrerAutomataCommand.execute();
+  });
+
+
 
 let $ = go.GraphObject.make;
 let automata;
