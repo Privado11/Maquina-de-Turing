@@ -1,7 +1,10 @@
 title = Machine de Turing
-idioma = langue
+idioma = langue ▼
 history = Histoire
+diagram = Diagramme
 insertarPalabra = Insérer le mot
 cargarPalabra = Mot de charge
 recorrido = Démarrage
 velocity = Vitesse: 
+words = Mot
+words-result = Mot résultant

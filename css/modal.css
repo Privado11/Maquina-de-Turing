@@ -1,0 +1,35 @@
+.modal {
+    display: none;
+    position: fixed; 
+    z-index: 9999; 
+    left: 50%;
+    top: 50%;
+    width: 400px; 
+    height: 300px; 
+    overflow: none; 
+    margin: auto;
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 100%;
+    max-height: calc(100% - 30px); /* Altura máxima del contenido */
+    overflow-y: auto;
+  }
+
+.buttonModal{
+    width: 50%;
+    height: 30px;
+    border-radius: 20px;
+    border: none;
+    background: rgb(14, 113, 80);
+    cursor: pointer;
+    color: white;
+    transition: linear .5s;
+    margin-bottom: 10px;    
+}
+.buttonModal:hover{
+    background: #1591b3;
+}

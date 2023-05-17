@@ -44,7 +44,7 @@ body{
 
 .historial{
     position: absolute;
-    top: 10%;
+    top: 20%;
     z-index: 9999;
     right: 4%;
     background-color: rgb(14, 113, 80);
@@ -55,7 +55,28 @@ body{
     transition: all linear .2s;
     border-radius: 5px;
 }
+
 .historial:hover{
+    background-color: rgb(19, 157, 111) ;
+    transition: all linear .2s;
+    cursor: pointer;
+}
+
+.diagram{
+    position: absolute;
+    top: 30%;
+    z-index: 9999;
+    right: 4%;
+    background-color: rgb(14, 113, 80);
+    border: none;
+    height: 40px;
+    padding: 10px;
+    color: white;
+    transition: all linear .2s;
+    border-radius: 5px;
+}
+
+.diagram:hover{
     background-color: rgb(19, 157, 111) ;
     transition: all linear .2s;
     cursor: pointer;
@@ -112,5 +133,11 @@ body{
 .velocity-con span{
     margin-left: 10px;
 }
+
+table, th, td {
+    border: 1px solid rgb(14, 113, 80);
+    border-collapse: collapse;
+    padding: 0 25px;
+  }
 
 

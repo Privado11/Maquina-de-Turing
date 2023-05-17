@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./css/maquinaTuring.css">
     <link rel="stylesheet" href="./css/menu.css">
     <link rel="stylesheet" href="./css/opcionIdioma.css">
+    <link rel="stylesheet" href="./css/modal.css">
     <script src="https://cdn.jsdelivr.net/npm/gojs/release/go.js"></script>
     <script defer src="./js/automata.js"></script>
     <script defer src="./js/menu.js"></script>
@@ -17,7 +18,7 @@
     <div class="automata" id="automata"></div>
     <div class="cinta" id="cinta"></div>
     <div class="dropdown">
-        <button class="dropbtn" id="idioma"><span class="icon">&#9660;</span></button>
+        <button class="dropbtn" id="idioma"></button>
         <div class="dropdown-content">
             <a class="items" href="#" data-lang="es">Español</a>
             <a class="items" href="#" data-lang="en">English</a>
@@ -25,6 +26,7 @@
         </div>
     </div>
     <button id="history" class="historial"></button>
+    <button id="diagram" class="diagram"></button>
         <div class="container">
             <h2 id="insertarPalabra" class="insert-word"></h2>
             <input type="text" id="texto" class="texto">
@@ -43,6 +45,22 @@
                     oninput="mostrarValorRango()">
                     </p>
                 </div>
+            </div>
+        </div>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <input type="button" value="Cerrar" class="buttonModal" id="botonModal">
+                <table id="tabla-datos">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th id="words"></th>
+                        <th id="words-result"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+            </table>
             </div>
         </div>
 </body>
