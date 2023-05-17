@@ -231,7 +231,6 @@ function recorrerAutomata() {
     reiniciarColoresDeNodosYEnlaces();
     actualizarVelocidad();
     procesarSiguienteCaracter(currentNode, inputWord, i, auxIndex, indNodo);
-
     comprobar = 2;
 }
 
@@ -329,15 +328,17 @@ function procesarSiguienteCaracter(currentNode, inputWord, i, auxIndex, indNodo)
         if (currentNode.data.isAccept) {
             currentNode.findMainElement().stroke = "red";
             currentNode.findMainElement().fill = "yellow";
-            /*setTimeout(function() {
-              mostrarModal(true);
-            }, 1000);*/
+            const mensaje = new SpeechSynthesisUtterance("Proceso finalizado");
+            mensaje.pitch = -1;
+            setTimeout(() => {
+              speechSynthesis.speak(mensaje);
+            }, 1000);
+        
+           
         } else {
             currentNode.findMainElement().stroke = "black";
             currentNode.findMainElement().fill = "red";
-            /*setTimeout(function() {
-              mostrarModal(false);
-            }, 1000);*/
+            
         }
     }
 }

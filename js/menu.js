@@ -8,6 +8,10 @@ const cerrarModal = document.getElementById('botonModal');
 cerrarModal.addEventListener("click", closedModal);
 const recorrido = document.getElementById('recorrido');
 recorrido.addEventListener("click", enviarDatos);
+const diagrama = document.getElementById('diagram');
+diagram.addEventListener('click', function() {
+  window.open('https://drive.google.com/file/d/1TEIeiVHYte1jU-F2T5TTyLtrT-jkHR46/view?usp=sharing', '_blank');
+});
 
 loadTranslation('es');
  

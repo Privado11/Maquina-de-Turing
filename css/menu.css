@@ -44,7 +44,7 @@ body{
 
 .historial{
     position: absolute;
-    top: 20%;
+    top: 5%;
     z-index: 9999;
     right: 4%;
     background-color: rgb(14, 113, 80);
@@ -64,7 +64,7 @@ body{
 
 .diagram{
     position: absolute;
-    top: 30%;
+    top: 15%;
     z-index: 9999;
     right: 4%;
     background-color: rgb(14, 113, 80);
